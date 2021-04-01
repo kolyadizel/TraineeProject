@@ -54,7 +54,7 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TasksAdapter.OnItemClic
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.tasksEvent.collect{   event ->
+            viewModel.tasksEvent.collect{  event ->
                 when(event) {
                     is TasksViewModel.TasksEvent.NavigateToAddTaskScreen -> {
                         val action  =

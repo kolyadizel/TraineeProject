@@ -1,28 +1,22 @@
 package com.example.hopeless.ui.tasks
 
-import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.example.hopeless.data.PreferencesManager
 import com.example.hopeless.data.Task
 import com.example.hopeless.data.TaskDao
 import com.example.hopeless.ui.ADD_TASK_RESULT_OK
 import com.example.hopeless.ui.DELETE_TASK_RESULT_OK
 import com.example.hopeless.ui.EDIT_TASK_RESULT_OK
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class TasksViewModel @ViewModelInject constructor(
-    private val taskDao: TaskDao,
-    private val preferencesManager: PreferencesManager,
-    @Assisted private val state: SavedStateHandle
+    private val taskDao: TaskDao
 ) : ViewModel() {
 
     private val tasksEventChannel = Channel<TasksEvent>()
     val tasksEvent = tasksEventChannel.receiveAsFlow()
-
 
     private val tasksFlow = taskDao.getTasks()
     val tasks = tasksFlow.asLiveData()

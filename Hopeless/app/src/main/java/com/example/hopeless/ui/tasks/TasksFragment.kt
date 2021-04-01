@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -16,6 +17,7 @@ import com.example.hopeless.databinding.FragmentTasksBinding
 import com.example.hopeless.util.exhaustive
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_tasks.*
 import kotlinx.android.synthetic.main.item_task.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -42,6 +44,7 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TasksAdapter.OnItemClic
             fabAddTask.setOnClickListener {
                 viewModel.onAddNewTaskClick()
             }
+
         }
 
         setFragmentResultListener("add_edit_request") {_, bundle ->
@@ -51,6 +54,10 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TasksAdapter.OnItemClic
 
         viewModel.tasks.observe(viewLifecycleOwner) {
             taskAdapter.submitList(it)
+        }
+
+        viewModel.getCount().observe(viewLifecycleOwner){
+            item_count.text = it.toString()
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -72,15 +79,16 @@ class TasksFragment : Fragment(R.layout.fragment_tasks), TasksAdapter.OnItemClic
                         Snackbar.make(requireView(), event.msg, Snackbar.LENGTH_SHORT).show()
                     }
                 }.exhaustive
-
             }
         }
-
     }
+
+
 
     override fun onItemClick(task: Task) {
         viewModel.onTaskSelected(task)
     }
+
 
 
 }

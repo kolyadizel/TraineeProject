@@ -8,6 +8,8 @@ import com.example.hopeless.ui.ADD_TASK_RESULT_OK
 import com.example.hopeless.ui.DELETE_TASK_RESULT_OK
 import com.example.hopeless.ui.EDIT_TASK_RESULT_OK
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
@@ -21,13 +23,16 @@ class TasksViewModel @ViewModelInject constructor(
     private val tasksFlow = taskDao.getTasks()
     val tasks = tasksFlow.asLiveData()
 
-
     fun onAddNewTaskClick() = viewModelScope.launch {
         tasksEventChannel.send(TasksEvent.NavigateToAddTaskScreen)
     }
 
     fun onTaskSelected(task: Task) = viewModelScope.launch {
         tasksEventChannel.send(TasksEvent.NavigateToEditTaskScreen(task))
+    }
+
+    fun getCount() : LiveData<Int>{
+        return taskDao.getCount()
     }
 
     fun onAddEditResult(result: Int){

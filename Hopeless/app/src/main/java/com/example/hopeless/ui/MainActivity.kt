@@ -8,7 +8,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.hopeless.R
+import com.example.hopeless.ui.tasks.TasksAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_tasks.*
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -23,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.findNavController()
 
         setupActionBarWithNavController(navController)
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
